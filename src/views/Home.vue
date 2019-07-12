@@ -1,18 +1,27 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    {{ projectStore.allProjects }}
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
+import { getModule } from 'vuex-module-decorators'
+import HelloWorld from '@/components/HelloWorld.vue'; 
+import ProjectService from '@/domain/project/project.service';
+import ProjectStore from '@/domain/project/project.store';
 
 @Component({
   components: {
     HelloWorld,
   },
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  private projectStore = getModule(ProjectStore);
+
+  created() {
+    this.projectStore.fetchProjects();
+    console.log(this.projectStore.allProjects)
+  }
+}
 </script>
